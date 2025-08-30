@@ -3,20 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coming Soon!</title>
+    <title>rioze.dev</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&family=Poppins:wght@800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Use a playful, rounded font */
         body {
             font-family: 'Quicksand', sans-serif;
             overflow: hidden;
             cursor: default;
         }
 
-        /* --- Parallax Layers --- */
         .parallax-layer {
             position: absolute;
             top: 0;
@@ -26,7 +24,6 @@
             transition: transform 0.1s linear;
         }
 
-        /* --- Sky Background Animation --- */
         .sky {
             background: linear-gradient(170deg, #2c3e50, #4a5a9a, #89cff0, #fbc2eb);
             background-size: 200% 200%;
@@ -39,7 +36,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* --- Starry Sky Animations --- */
         .star {
             position: absolute;
             width: 2px;
@@ -55,7 +51,6 @@
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* --- Cloud Styling & Animations --- */
         .cloud {
             position: absolute;
             background: white;
@@ -100,19 +95,21 @@
         .animated-text {
             font-family: 'Poppins', sans-serif;
             text-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            font-size: 6rem; /* Fallback for sm screens */
+            font-size: 12vw;
             white-space: nowrap;
             position: absolute;
             color: white;
             font-weight: 800;
-        }
-        
-        @media (min-width: 640px) { .animated-text { font-size: 8rem; } }
-        @media (min-width: 768px) { .animated-text { font-size: 9rem; } }
-
-        .animated-text {
             clip-path: inset(0 100% 0 0);
             animation: cycle-text 12s ease-in-out infinite;
+        }
+        
+        /* Larger font sizes for tablets and desktops */
+        @media (min-width: 640px) { 
+            .animated-text { font-size: 6rem; } 
+        }
+        @media (min-width: 768px) { 
+            .animated-text { font-size: 7rem; } 
         }
         
         .text-jp {
@@ -181,11 +178,8 @@
     <!-- Parallax Layer for Main Content/Text -->
     <div id="text-layer" class="parallax-layer z-10 flex items-center justify-center p-4">
         <div class="text-container">
-            <!-- Base Text (English) -->
             <h1 class="animated-text text-en">coming soon!</h1>
-            <!-- Japanese Text -->
             <h1 class="animated-text text-jp">工事ちゅう〜</h1>
-            <!-- Indonesian Text -->
             <h1 class="animated-text text-id">tunggu ya...</h1>
             <div class="slider-line"></div>
         </div>
@@ -197,12 +191,12 @@
             const cloudsLayer = document.getElementById('clouds-layer');
             const textLayer = document.getElementById('text-layer');
 
-            // Define how much each layer moves. Negative values create a more natural depth effect.
+            // Negative values create a more natural depth effect.
             const starsStrength = -5;
             const cloudsStrength = -12;
             const textStrength = -25;
             
-            // Function to apply the transformation
+            // apply the transformation
             const applyParallax = (x, y) => {
                 // x and y should be normalized values between -1 and 1
                 const moveXStars = starsStrength * x;
