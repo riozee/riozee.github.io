@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&family=Poppins:wght@800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Use a playful, rounded font */
+        body {
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden;
+            cursor: default;
+        }
+
+        /* --- Parallax Layers --- */
+        .parallax-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.1s linear;
+        }
+
+        /* --- Sky Background Animation --- */
+        .sky {
+            background: linear-gradient(170deg, #2c3e50, #4a5a9a, #89cff0, #fbc2eb);
+            background-size: 200% 200%;
+            animation: gradient-flow 20s ease infinite;
+        }
+
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Starry Sky Animations --- */
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite ease-in-out alternate;
+            box-shadow: 0 0 5px #fff, 0 0 10px #fff;
+        }
+
+        @keyframes twinkle {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* --- Cloud Styling & Animations --- */
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
+            animation: drift linear infinite;
+        }
+
+        .cloud:before, .cloud:after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .cloud-1 { width: 100px; height: 30px; top: 10%; animation-duration: 55s; }
+        .cloud-1:before { width: 40px; height: 40px; top: -20px; left: 10px; }
+        .cloud-1:after { width: 60px; height: 60px; top: -30px; right: 10px; }
+
+        .cloud-2 { width: 150px; height: 45px; top: 25%; animation-duration: 40s; animation-delay: -10s; }
+        .cloud-2:before { width: 60px; height: 60px; top: -30px; left: 15px; }
+        .cloud-2:after { width: 90px; height: 90px; top: -45px; right: 15px; }
+
+        .cloud-3 { width: 120px; height: 35px; top: 70%; animation-duration: 50s; animation-delay: -5s; }
+        .cloud-3:before { width: 50px; height: 50px; top: -25px; left: 12px; }
+        .cloud-3:after { width: 70px; height: 70px; top: -35px; right: 12px; }
+        
+        @keyframes drift {
+            from { transform: translateX(-250px); }
+            to { transform: translateX(110vw); }
+        }
+
+        /* --- Main "Coming Soon" Text Styling & Animation --- */
+        .text-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .animated-text {
+            font-family: 'Poppins', sans-serif;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            font-size: 6rem; /* Fallback for sm screens */
+            white-space: nowrap;
+            position: absolute;
+            color: white;
+            font-weight: 800;
+        }
+        
+        @media (min-width: 640px) { .animated-text { font-size: 8rem; } }
+        @media (min-width: 768px) { .animated-text { font-size: 9rem; } }
+
+        .animated-text {
+            clip-path: inset(0 100% 0 0);
+            animation: cycle-text 12s ease-in-out infinite;
+        }
+        
+        .text-jp {
+            animation-delay: 4s;
+        }
+
+        .text-id {
+            animation-delay: 8s;
+        }
+
+        .slider-line {
+            position: absolute;
+            left: 0;
+            top: -10%;
+            width: 4px;
+            height: 120%;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 2px;
+            box-shadow: 0 0 10px white;
+            transform: translateX(-100%);
+            animation: swipe-line 4s ease-in-out infinite;
+        }
+
+        @keyframes cycle-text {
+            /* Reveal */
+            0%      { clip-path: inset(0 100% 0 0); }
+            8.3%    { clip-path: inset(0 0 0 0); } /* Visible at 1s */
+            /* Hold */
+            33.3%   { clip-path: inset(0 0 0 0); } /* Hold until 4s */
+            /* Hide */
+            41.6%   { clip-path: inset(0 0 0 100%); } /* Hidden at 5s */
+            /* Stay Hidden */
+            100%    { clip-path: inset(0 0 0 100%); }
+        }
+        
+        @keyframes swipe-line {
+            0%, 20% { left: 0%; transform: translateX(-50%); }
+            80%, 100% { left: 100%; transform: translateX(-50%); }
+        }
+
+    </style>
+</head>
+<body class="sky relative w-full h-screen">
+    
+    <!-- Parallax Layer for Stars -->
+    <div id="stars-layer" class="parallax-layer">
+        <div class="star" style="top: 10%; left: 15%; animation-delay: 0s;"></div>
+        <div class="star" style="top: 25%; left: 45%; animation-delay: 0.3s; width: 3px; height: 3px;"></div>
+        <div class="star" style="top: 5%; left: 80%; animation-delay: 1.2s;"></div>
+        <div class="star" style="top: 80%; left: 90%; animation-delay: 0.5s;"></div>
+        <div class="star" style="top: 95%; left: 50%; animation-delay: 0.2s; width: 3px; height: 3px;"></div>
+        <div class="star" style="top: 60%; left: 10%; animation-delay: 1.5s;"></div>
+        <div class="star" style="top: 40%; left: 75%; animation-delay: 0.8s; width: 1px; height: 1px;"></div>
+        <div class="star" style="top: 55%; left: 20%; animation-delay: 1.8s;"></div>
+        <div class="star" style="top: 85%; left: 60%; animation-delay: 0.1s;"></div>
+        <div class="star" style="top: 15%; left: 5%; animation-delay: 0.9s;"></div>
+    </div>
+
+    <!-- Parallax Layer for Clouds -->
+    <div id="clouds-layer" class="parallax-layer">
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+    </div>
+
+    <!-- Parallax Layer for Main Content/Text -->
+    <div id="text-layer" class="parallax-layer z-10 flex items-center justify-center p-4">
+        <div class="text-container">
+            <!-- Base Text (English) -->
+            <h1 class="animated-text text-en">coming soon!</h1>
+            <!-- Japanese Text -->
+            <h1 class="animated-text text-jp">工事ちゅう〜</h1>
+            <!-- Indonesian Text -->
+            <h1 class="animated-text text-id">tunggu ya...</h1>
+            <div class="slider-line"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const starsLayer = document.getElementById('stars-layer');
+            const cloudsLayer = document.getElementById('clouds-layer');
+            const textLayer = document.getElementById('text-layer');
+
+            // Define how much each layer moves. Negative values create a more natural depth effect.
+            const starsStrength = -5;
+            const cloudsStrength = -12;
+            const textStrength = -25;
+            
+            // Function to apply the transformation
+            const applyParallax = (x, y) => {
+                // x and y should be normalized values between -1 and 1
+                const moveXStars = starsStrength * x;
+                const moveYStars = starsStrength * y;
+                starsLayer.style.transform = `translate(${moveXStars}px, ${moveYStars}px)`;
+                
+                const moveXClouds = cloudsStrength * x;
+                const moveYClouds = cloudsStrength * y;
+                cloudsLayer.style.transform = `translate(${moveXClouds}px, ${moveYClouds}px)`;
+
+                const moveXText = textStrength * x;
+                const moveYText = textStrength * y;
+                textLayer.style.transform = `translate(${moveXText}px, ${moveYText}px)`;
+            };
+
+            // Detect if it's a touch device to prioritize accelerometer
+            const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
+            if (!isTouchDevice) {
+                // Use mouse movement for non-touch devices
+                window.addEventListener('mousemove', (e) => {
+                    const { clientX, clientY } = e;
+                    const midX = window.innerWidth / 2;
+                    const midY = window.innerHeight / 2;
+                    
+                    const normalizedX = (clientX - midX) / midX;
+                    const normalizedY = (clientY - midY) / midY;
+
+                    applyParallax(normalizedX, normalizedY);
+                });
+            } else {
+                // Use device orientation for touch devices (mobiles/tablets)
+                window.addEventListener('deviceorientation', (e) => {
+                    // beta is front-to-back tilt, gamma is left-to-right tilt
+                    const { beta, gamma } = e;
+
+                    if (beta === null || gamma === null) return;
+                    
+                    // Normalize the tilt angles. We'll use a range of +/- 30 degrees.
+                    const range = 30;
+                    const normalizedX = Math.max(-1, Math.min(1, gamma / range));
+                    const normalizedY = Math.max(-1, Math.min(1, beta / range));
+
+                    applyParallax(normalizedX, normalizedY);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+
+
