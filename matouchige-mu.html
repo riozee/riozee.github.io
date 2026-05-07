@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>的撃ちゲーム</title>
+    <style>
+      body {
+        background: darkgray;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      canvas {
+        background: #505050;
+        border: 5px solid palegreen;
+      }
+
+      .d {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .e {
+        position: relative;
+      }
+
+      .canvas-container {
+        position: relative;
+        display: inline-block;
+      }
+
+      #text {
+        color: white;
+        font-size: x-large;
+      }
+
+      #score_ {
+        position: absolute;
+        top: 10%;
+        right: 1%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: xx-large;
+        margin: 0;
+        pointer-events: none;
+      }
+
+      #time_ {
+        position: absolute;
+        top: 15%;
+        right: 1%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: xx-large;
+        margin: 0;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="e">
+      <div class="d">
+        <p id="text"></p>
+        <div class="canvas-container">
+          <canvas id="myCanvas" width="1000" height="600"></canvas>
+          <p class="controls-tip">
+            右 / 左 : 発射台を動かす、上 : ミサイルを発射する
+          </p>
+          <p id="score_">SCORE: <span id="score">0</span></p>
+          <p id="time_">TIME: <span id="time">0s</span></p>
+        </div>
+      </div>
+    </div>
+    <script>
+      const canvas = document.getElementById("myCanvas");
+      const ctx = canvas.getContext("2d");
+
+      let x = canvas.width / 2;
+      let y = canvas.height - 30;
+
+      const launcher_speed = 4;
+      let launcher = {
+        x: canvas.width / 2,
+        y: canvas.height - canvas.height / 9,
+        w: 60,
+        h: 20,
+      };
+
+      const missile_speed = 6;
+      const missile_y = launcher.y - 40;
+      let missile = {
+        x: launcher.x + 28,
+        y: missile_y,
+        w: 5,
+        h: 40,
+      };
+
+      let rightPressed = false;
+      let leftPressed = false;
+
+      const t_img = new Image();
+      t_img.src = "image.png";
+      let t_rect = { x: -70, y: 50, w: 70, h: 70 };
+      let t_vx = 5;
+      t_img.onload = () => {
+        t_rect.w = t_img.width;
+        t_rect.h = t_img.height;
+      };
+
+      let n = 0;
+
+      let is_reverse = false;
+      let background = "black";
+      let score = 0;
+      let time = 0;
+
+      function draw() {
+        t_rect.y = 100 + 20 * Math.sin(n);
+        if (t_rect.x > canvas.width) t_rect.x = -70;
+        if (t_rect.x < -70) t_rect.x = canvas.width;
+        if (Math.random() > 0.99) is_reverse = !is_reverse;
+        if (is_reverse) {
+          t_rect.x -= 2;
+        } else {
+          t_rect.x += 2;
+        }
+        if (t_rect.x > launcher.x) {
+          t_rect.x += 1;
+        } else {
+          t_rect.x -= 1;
+        }
+        n += 0.05;
+        ctx.fillStyle = background;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(t_img, t_rect.x, t_rect.y);
+        if (rightPressed) {
+          launcher.x += launcher_speed;
+          missile.x += launcher_speed;
+        }
+        if (leftPressed) {
+          launcher.x -= launcher_speed;
+          missile.x -= launcher_speed;
+        }
+        launcher.x = Math.max(
+          0,
+          Math.min(canvas.width - launcher.w, launcher.x),
+        );
+        missile.x = Math.max(0, Math.min(canvas.width - missile.w, missile.x));
+        ctx.fillStyle = "rgb(200, 100, 100)";
+        ctx.fillRect(launcher.x, launcher.y, launcher.w, launcher.h);
+        document.getElementById("text").innerText =
+          t_rect.x +
+          " | Math.sin(" +
+          n.toFixed(1) +
+          ") = " +
+          Math.sin(n).toFixed(2) +
+          " | " +
+          String(is_reverse).toUpperCase();
+        document.getElementById("score").innerText = score.toString();
+        document.getElementById("time").innerText = time.toString() + "s";
+
+        ctx.fillStyle = "white";
+        ctx.fillRect(missile.x, missile.y, missile.w, missile.h);
+      }
+
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") rightPressed = true;
+        if (e.key === "ArrowLeft") leftPressed = true;
+        if (e.key === "ArrowUp") shoot();
+      });
+
+      window.addEventListener("keyup", (e) => {
+        if (e.key === "ArrowRight") rightPressed = false;
+        if (e.key === "ArrowLeft") leftPressed = false;
+      });
+
+      function shoot() {
+        let interval = setInterval(() => {
+          missile.y -= missile_speed;
+          if (missile.y < 0) {
+            missile.y = missile_y;
+            clearInterval(interval);
+          }
+        }, 1);
+      }
+
+      setInterval(() => {
+        if (
+          Math.abs(t_rect.y + 70 - missile.y) < 70 &&
+          Math.abs(t_rect.x + 70 - missile.x) < 70
+        ) {
+          background = "red";
+          score += 100;
+          setTimeout(() => (background = "black"), 100);
+        }
+      }, 1);
+
+      setInterval(() => (time += 1), 1000);
+
+      setInterval(draw, 1);
+    </script>
+  </body>
+</html>
