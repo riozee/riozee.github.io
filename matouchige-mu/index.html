@@ -119,19 +119,19 @@
       let time = 0;
 
       function draw() {
-        t_rect.y = 100 + 20 * Math.sin(n);
+        t_rect.y = 100 + 150 * Math.sin(n);
         if (t_rect.x > canvas.width) t_rect.x = -70;
         if (t_rect.x < -70) t_rect.x = canvas.width;
         if (Math.random() > 0.99) is_reverse = !is_reverse;
         if (is_reverse) {
-          t_rect.x -= 2;
+          t_rect.x -= 3;
         } else {
-          t_rect.x += 2;
+          t_rect.x += 3;
         }
         if (t_rect.x > launcher.x) {
-          t_rect.x += 1;
+          t_rect.x += 2;
         } else {
-          t_rect.x -= 1;
+          t_rect.x -= 2;
         }
         n += 0.05;
         ctx.fillStyle = background;
