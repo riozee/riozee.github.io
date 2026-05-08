@@ -90,7 +90,8 @@
         h: 20,
       };
 
-      const missile_speed = 6;
+      let missile_speed_x = +`${launcher_speed}`;
+      let missile_speed_y = 6;
       const missile_y = launcher.y - 40;
       let missile = {
         x: launcher.x + 28,
@@ -117,21 +118,22 @@
       let background = "black";
       let score = 0;
       let time = 0;
+      let is_launching = false;
 
       function draw() {
-        t_rect.y = 100 + 150 * Math.sin(n);
+        t_rect.y = 100 + 20 * Math.sin(n);
         if (t_rect.x > canvas.width) t_rect.x = -70;
         if (t_rect.x < -70) t_rect.x = canvas.width;
         if (Math.random() > 0.99) is_reverse = !is_reverse;
         if (is_reverse) {
-          t_rect.x -= 3;
+          t_rect.x -= 2;
         } else {
-          t_rect.x += 3;
+          t_rect.x += 2;
         }
         if (t_rect.x > launcher.x) {
-          t_rect.x += 2;
+          t_rect.x += 1;
         } else {
-          t_rect.x -= 2;
+          t_rect.x -= 1;
         }
         n += 0.05;
         ctx.fillStyle = background;
@@ -139,11 +141,11 @@
         ctx.drawImage(t_img, t_rect.x, t_rect.y);
         if (rightPressed) {
           launcher.x += launcher_speed;
-          missile.x += launcher_speed;
+          missile.x += missile_speed_x;
         }
         if (leftPressed) {
           launcher.x -= launcher_speed;
-          missile.x -= launcher_speed;
+          missile.x -= missile_speed_x;
         }
         launcher.x = Math.max(
           0,
@@ -179,25 +181,46 @@
       });
 
       function shoot() {
+        is_launching = true;
         let interval = setInterval(() => {
-          missile.y -= missile_speed;
-          if (missile.y < 0) {
+          missile.y -= missile_speed_y;
+          if (
+            missile.y < 0 ||
+            missile.y > canvas.height ||
+            missile.x < 0 ||
+            missile.x > canvas.width
+          ) {
             missile.y = missile_y;
+            missile.x = launcher.x + 28;
+            is_launching = false;
+            missile_speed_x = +`${launcher_speed}`;
+            missile_speed_y = 6;
             clearInterval(interval);
           }
         }, 1);
       }
 
+      let is_processing_collision = false;
       setInterval(() => {
         if (
           Math.abs(t_rect.y + 70 - missile.y) < 70 &&
           Math.abs(t_rect.x + 70 - missile.x) < 70
         ) {
-          background = "red";
-          score += 100;
-          setTimeout(() => (background = "black"), 100);
+          if (!is_processing_collision) process_collision();
         }
       }, 1);
+
+      function process_collision() {
+        is_processing_collision = true;
+        background = "red";
+        score += 100;
+        missile_speed_x *= -1;
+        missile_speed_y *= -1;
+        setTimeout(() => {
+          is_processing_collision = false;
+          background = "black";
+        }, 100);
+      }
 
       setInterval(() => (time += 1), 1000);
 
