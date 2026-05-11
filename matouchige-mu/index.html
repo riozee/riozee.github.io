@@ -59,6 +59,17 @@
         margin: 0;
         pointer-events: none;
       }
+
+      #hp {
+        position: absolute;
+        top: 5%;
+        left: 20%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: xx-large;
+        margin: 0;
+        pointer-events: none;
+      }
     </style>
   </head>
   <body>
@@ -72,12 +83,16 @@
           </p>
           <p id="score_">SCORE: <span id="score">0</span></p>
           <p id="time_">TIME: <span id="time">0s</span></p>
+          <label for="hp">HP: </label>
+          <progress id="hp" max="100" value="0"></progress>
         </div>
       </div>
     </div>
     <script>
       const canvas = document.getElementById("myCanvas");
       const ctx = canvas.getContext("2d");
+
+      let hp = 100;
 
       let x = canvas.width / 2;
       let y = canvas.height - 30;
@@ -164,6 +179,7 @@
           String(is_reverse).toUpperCase();
         document.getElementById("score").innerText = score.toString();
         document.getElementById("time").innerText = time.toString() + "s";
+        document.getElementById("hp").value = hp.toString();
 
         ctx.fillStyle = "white";
         ctx.fillRect(missile.x, missile.y, missile.w, missile.h);
@@ -214,6 +230,8 @@
         is_processing_collision = true;
         background = "red";
         score += 100;
+        hp -= 10;
+        if (hp < 0) hp = 100;
         missile_speed_x *= -1;
         missile_speed_y *= -1;
         setTimeout(() => {
